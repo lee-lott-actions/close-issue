@@ -40,7 +40,7 @@ This GitHub Action closes a specified GitHub issue using the GitHub API. It retu
        steps:
          - name: Close Issue
            id: close
-           uses: la-actions/close-issue-action@v1.0.0
+           uses: lee-lott-actions/close-issue-action@v1.0.0
            with:
              issue-number: ${{ github.event.issue.number }}
              token: ${{ secrets.GITHUB_TOKEN }}
