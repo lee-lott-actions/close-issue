@@ -1,0 +1,35 @@
+name: Close Issue
+description: A GitHub Action to close a specified GitHub issue using the GitHub API
+author: Louisiana Office of Technology Services
+
+inputs:
+  issue-number:
+    description: 'The issue number to close'
+    required: true
+  token:
+    description: 'GitHub token with repository write access'
+    required: true
+  owner:
+    description: 'The owner of the repository'
+    required: true
+  repo-name:
+    description: 'The name of the repository'
+    required: true
+
+outputs:
+  result:
+    description: 'Result of the issue closure attempt ("success" or "failure")'
+    value: ${{ steps.action.outputs.result }}
+  error-message:
+    description: 'Error message if the issue closure fails'
+    value: ${{ steps.action.outputs.error-message }}
+
+runs:
+  using: composite
+  steps:
+    - name: Close Issue
+      id: action
+      run: |        
+        source ${{ github.action_path }}/action.sh
+        close_issue "${{ inputs.issue-number }}" "${{ inputs.token }}" "${{ inputs.owner }}" "${{ inputs.repo-name }}"
+      shell: bash
