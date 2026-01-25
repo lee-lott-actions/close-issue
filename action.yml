@@ -29,7 +29,7 @@ runs:
   steps:
     - name: Close Issue
       id: action
+      shell: pwsh
       run: |        
-        source ${{ github.action_path }}/action.sh
-        close_issue "${{ inputs.issue-number }}" "${{ inputs.token }}" "${{ inputs.owner }}" "${{ inputs.repo-name }}"
-      shell: bash
+        . "${{ github.action_path }}/action.ps1"
+        Close-Issue "${{ inputs.issue-number }}" "${{ inputs.token }}" "${{ inputs.owner }}" "${{ inputs.repo-name }}"
