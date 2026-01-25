@@ -35,7 +35,7 @@ function Close-Issue {
 
     try {
         Write-Host "Sending PATCH request to $uri"
-        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Patch -Body $jsonBody -ErrorAction Stop
+        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Patch -Body $jsonBody
 
         Write-Host "API Response Code: $($response.StatusCode)"
         Write-Host $response.Content
