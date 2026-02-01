@@ -73,4 +73,17 @@ Describe "Close-Issue" {
         $output | Should -Contain "result=failure"
         $output | Should -Contain "error-message=Missing required parameters: issue_number, repo_name, owner, and token must be provided."
     }
+	
+	It "writes result=failure and error-message on exception" {
+		Mock Invoke-WebRequest { throw "API Error" }
+
+		try {
+			Close-Issue -IssueNumber $IssueNumber -Token $Token -Owner $Owner -RepoName $RepoName
+		} catch {}
+
+		$output = Get-Content $env:GITHUB_OUTPUT
+		$output | Should -Contain "result=failure"
+		$output | Where-Object { $_ -match "^error-message=Error: Failed to close issue #$IssueNumber\. Exception:" } |
+			Should -Not -BeNullOrEmpty
+	}	
 }
