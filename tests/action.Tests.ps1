@@ -80,7 +80,7 @@ Describe "Close-Issue" {
 	}
 
 	Context "Exception Failure Cases" {
-		It "unit: Close-Issue fials with exception" {
+		It "unit: Close-Issue fails with exception" {
 			Mock Invoke-WebRequest { throw "API Error" }
 	
 			try {
