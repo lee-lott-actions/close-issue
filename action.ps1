@@ -15,9 +15,7 @@ function Close-Issue {
         Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=Missing required parameters: issue_number, repo_name, owner, and token must be provided."
         Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
         return
-    }
-
-    Write-Host "Attempting to close issue #$IssueNumber in $Owner/$RepoName"
+    }    
 
     # Use MOCK_API if set, otherwise default to GitHub API
     $apiBaseUrl = $env:MOCK_API
@@ -26,27 +24,25 @@ function Close-Issue {
 
     $headers = @{
         Authorization = "Bearer $Token"
-        Accept = "application/vnd.github.v3+json"
+        Accept = "application/vnd.github+json"
 		"X-GitHub-Api-Version" = "2026-03-10"
         "Content-Type" = "application/json"
     }
 
-    $jsonBody = @{ state = 'closed' } | ConvertTo-Json
+    $body = @{ state = 'closed' } | ConvertTo-Json
 
     try {
-        Write-Host "Sending PATCH request to $uri"
-        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Patch -Body $jsonBody
-
-        Write-Host "API Response Code: $($response.StatusCode)"
-        Write-Host $response.Content
+        Write-Host "Attempting to close issue #$IssueNumber in $Owner/$RepoName"
+        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Patch -Body $body
 
         if ($response.StatusCode -eq 200) {
             Add-Content -Path $env:GITHUB_OUTPUT -Value "result=success"
             Write-Host "Closed issue #$IssueNumber in $Owner/$RepoName"
         } else {
+			$errorMsg = "Error: Failed to close issue #$IssueNumber. Status: $($response.StatusCode)"
             Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
-            Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=Failed to close issue #$IssueNumber. Status: $($response.StatusCode)"
-            Write-Host "Error: Failed to close issue #$IssueNumber. Status: $($response.StatusCode)"
+            Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=$errorMsg"
+            Write-Host $errorMsg
         }
     } catch {
 		$errorMsg = "Error: Failed to close issue #$IssueNumber. Exception: $($_.Exception.Message)"
