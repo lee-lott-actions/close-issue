@@ -32,4 +32,8 @@ runs:
       shell: pwsh
       run: |        
         . "${{ github.action_path }}/action.ps1"
-        Close-Issue "${{ inputs.issue-number }}" "${{ inputs.token }}" "${{ inputs.owner }}" "${{ inputs.repo-name }}"
+        Close-Issue `
+          -IssueNumber "${{ inputs.issue-number }}" `
+          -Token "${{ inputs.token }}" `
+          -Owner "${{ inputs.owner }}" `
+          -RepoName "${{ inputs.repo-name }}"
