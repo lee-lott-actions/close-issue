@@ -33,7 +33,7 @@ function Close-Issue {
 
     try {
         Write-Host "Attempting to close issue #$IssueNumber in $Owner/$RepoName"
-        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Patch -Body $body
+        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Patch -Body $body -SkipHttpErrorCheck
 
         if ($response.StatusCode -eq 200) {
             Add-Content -Path $env:GITHUB_OUTPUT -Value "result=success"
