@@ -15,7 +15,7 @@ Describe "Close-Issue" {
 	
     AfterEach {
         if (Test-Path $env:GITHUB_OUTPUT) { Remove-Item $env:GITHUB_OUTPUT }
-        Remove-Variable -Name MOCK_API -Scope Global -ErrorAction SilentlyContinue
+        Remove-Item Env:MOCK_API -ErrorAction SilentlyContinue
     }
 
 	Context "Success Cases" {
